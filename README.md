@@ -2,49 +2,55 @@
 
 # Podimo to RSS
 
-Podimo is a proprietary podcasting player that enables you to listen to various exclusive shows behind a paywall.
-This tool allows you to stream Podimo podcasts with your preferred podcast player, without having to use the Podimo app.
+**Stream Podimo podcasts in any podcast app — no Podimo app required.**
+
+Podimo is a proprietary podcast platform with exclusive shows behind a paywall. This tool bridges that gap by exposing your Podimo library as standard RSS feeds, compatible with any podcast client.
+
+[![License: EUPL 1.2](https://img.shields.io/badge/License-EUPL_1.2-blue.svg)](https://joinup.ec.europa.eu/software/page/eupl)
+
 </div>
 
-## Recommended installation for self-hosting
-Make sure you have a recent Python 3 version installed, as this is required for the steps below.
+---
 
-1. Clone this repository and enter the newly created directory
+## Table of Contents
+
+- [Installation](#installation)
+- [Docker](#docker)
+- [Finding your Podcast ID](#finding-your-podcast-id)
+- [Configuration](#configuration)
+- [Bot Detection](#bot-detection)
+- [Privacy](#privacy)
+- [License](#license)
+- [Support](#support)
+
+---
+
+## Installation
+
+> Requires Python 3.8+
+
 ```sh
-git clone https://github.com/ThijsRay/podimo
+git clone https://github.com/izu-x/podimo
 cd podimo
-```
-
-2. Get the latest update and install it as a service with
-```sh
 make update
 make install
-```
-
-3. Run the program with
-```sh
 make start
 ```
 
-4. Visit http://localhost:12104. You should see the site now! If you want to reach it from
-other machines, make sure to edit the configuration with
+Visit [http://localhost:12104](http://localhost:12104) — you should see the interface.
+
+To make it accessible from other machines or adjust settings:
+
 ```sh
 make config
 ```
-A complete list of all configuration options can be found in the [.env.example file](.env.example)
 
-## Instructions for self-hosting with Docker
+A full list of options is in [.env.example](.env.example).
 
-1. Pull the Docker image with
+---
 
-```sh
-docker pull ghcr.io/thijsray/podimo:latest
-```
+## Docker
 
-2. Run the Docker image.
-Make sure you set the correct environment variables if you want to configure any variables.
-See [.env.example](.env.example) for a full list
-of configuration options.
 ```sh
 docker run --rm \
     -e PODIMO_BIND_HOST=0.0.0.0:12104 \
@@ -53,55 +59,69 @@ docker run --rm \
     ghcr.io/thijsray/podimo:latest
 ```
 
-3. Visit http://localhost:12104. You should see the site now!
+Visit [http://localhost:12104](http://localhost:12104) once running.
+
+See [.env.example](.env.example) for all available environment variables.
+
+---
 
 ## Finding your Podcast ID
 
-Every podcast on Podimo has a unique ID (a UUID that looks like `09c55c96-9b1b-456e-bdf2-3abed3b61db5`).
-The easiest way to find it is through the open Podimo portal:
+Each Podimo podcast has a unique UUID used to generate the RSS feed. The easiest way to find it:
 
 1. Go to [open.podimo.com](https://open.podimo.com)
-2. Search for the podcast you want
-3. Open the podcast page
-4. The ID is the UUID at the end of the URL:
+2. Search for and open the podcast page
+3. Copy the UUID from the URL:
 
-   ```text
-   https://open.podimo.com/podcast/09c55c96-9b1b-456e-bdf2-3abed3b61db5
-                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                                    this is your Podcast ID
-   ```
+```text
+https://open.podimo.com/podcast/09c55c96-9b1b-456e-bdf2-3abed3b61db5
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                 your Podcast ID
+```
 
-Copy that ID and use it when generating your feed URL.
+Use that ID when generating your feed URL in the interface.
+
+---
 
 ## Configuration
-A complete list of all configuration options can be found in the [.env.example file](.env.example)
 
-## Bot detection
-Depending on your usage patterns, it might be necessary to bypass Podimo's anti-bot mechanisms.
-This can be done through a Zenrows, ScraperAPI or a generic HTTP proxy.
+All configuration is done via environment variables or the `.env` file. Run `make config` to edit it interactively.
 
-### Setting up a Zenrows account
-You can create a free trial account for Zenrows
+Full reference: [.env.example](.env.example)
 
-1. Go to [app.zenrows.com/register](https://app.zenrows.com/register) and create a free account
-2. Copy your API key and make sure to add it to the `ZENROWS_API` environment variable
+---
 
-### Setting up a ScraperAPI account
-You can create a free trial account for ScraperAPI
+## Bot Detection
 
-1. Go to [dashboard.scraperapi.com/signup](https://dashboard.scraperapi.com/signup) and create a free account
-2. Copy your API key and make sure to add it to the `SCRAPER_API` environment variable
+Depending on your usage patterns, Podimo may trigger anti-bot protections. You can route requests through a proxy service to work around this.
+
+### Zenrows
+
+1. Create a free account at [app.zenrows.com/register](https://app.zenrows.com/register)
+2. Set the `ZENROWS_API` environment variable to your API key
+
+### ScraperAPI
+
+1. Create a free account at [dashboard.scraperapi.com/signup](https://dashboard.scraperapi.com/signup)
+2. Set the `SCRAPER_API` environment variable to your API key
+
+---
 
 ## Privacy
-The script keeps track of a few things in memory:
-- Your username and password, used to login and to create an access token. This is only used temporarily during a request itself.
-- A cryptographic hash that is calculated based on your username and password.
-- A Podimo access token, which is kept in memory for accessing pages after logging in.
 
-This data is not written to the disk (unless `STORE_TOKENS_ON_DISK` is set to true) and it is _never_ logged.
+The tool handles credentials as follows:
 
-# License
-```
+- **Username and password** are used only to obtain an access token and are never written to disk
+- **A cryptographic hash** of your credentials is kept in memory as a cache key
+- **The Podimo access token** is cached in memory (or on disk if `STORE_TOKENS_ON_DISK=true`)
+
+Nothing is ever logged.
+
+---
+
+## License
+
+```text
 Copyright 2022-2023 Thijs Raymakers
 
 Licensed under the EUPL, Version 1.2 or – as soon they
@@ -109,21 +129,15 @@ will be approved by the European Commission - subsequent
 versions of the EUPL (the "Licence");
 You may not use this work except in compliance with the
 Licence.
-You may obtain a copy of the Licence at:
 
 https://joinup.ec.europa.eu/software/page/eupl
-
-Unless required by applicable law or agreed to in
-writing, software distributed under the Licence is
-distributed on an "AS IS" basis,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-express or implied.
-See the Licence for the specific language governing
-permissions and limitations under the Licence.
 ```
 
-# Support
-If you find this tool to be helpful, please consider buying me a coffee! It is greatly appreciated!
+---
+
+## Support
+
+If this tool saves you time, consider buying a coffee:
 
 <a href="https://www.buymeacoffee.com/thijsr"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=thijsr&button_colour=BD5FFF&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00" /></a>
 
