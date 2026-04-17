@@ -55,6 +55,24 @@ docker run --rm \
 
 3. Visit http://localhost:12104. You should see the site now!
 
+## Finding your Podcast ID
+
+Every podcast on Podimo has a unique ID (a UUID that looks like `09c55c96-9b1b-456e-bdf2-3abed3b61db5`).
+The easiest way to find it is through the open Podimo portal:
+
+1. Go to [open.podimo.com](https://open.podimo.com)
+2. Search for the podcast you want
+3. Open the podcast page
+4. The ID is the UUID at the end of the URL:
+
+   ```text
+   https://open.podimo.com/podcast/09c55c96-9b1b-456e-bdf2-3abed3b61db5
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                    this is your Podcast ID
+   ```
+
+Copy that ID and use it when generating your feed URL.
+
 ## Configuration
 A complete list of all configuration options can be found in the [.env.example file](.env.example)
 
