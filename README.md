@@ -139,6 +139,6 @@ https://joinup.ec.europa.eu/software/page/eupl
 
 If this tool saves you time, consider buying a coffee:
 
-<a href="https://www.buymeacoffee.com/thijsr"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=thijsr&button_colour=BD5FFF&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00" /></a>
+[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/thijsr) — original author
 
-<a href="https://buymeacoffee.com/izu_x"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=izu_x&button_colour=BD5FFF&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00" /></a>
+[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/izu_x) — fork maintainer
