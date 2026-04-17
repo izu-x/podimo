@@ -310,7 +310,7 @@ async def addFeedEntry(fg, episode, session, locale):
 
     if VIDEO_ENABLED:
         if VIDEO_CHECK_ENABLED:
-            if video_exists_at_url(hls_url):
+            if await video_exists_at_url(hls_url):
                 fe.description(
                     f"Video URL found at: {hls_url} (experimental) || {episode['description']}"
                 )
@@ -318,7 +318,9 @@ async def addFeedEntry(fg, episode, session, locale):
             else:
                 fe.description(f"Video URL: {hls_url} (not verified) || {episode['description']}")
                 fe.title(episode["title"])
-
+        else:
+            fe.description(f"Video URL: {hls_url} (not verified) || {episode['description']}")
+            fe.title(episode["title"])
     else:
         fe.description(episode["description"])
         fe.title(episode["title"])
